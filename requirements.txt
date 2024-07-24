@@ -5,4 +5,5 @@ virtualenv==20.26.3
 asgiref==3.8.1
 django==5.0.7
 sqlparse==0.5.1
+psycopg2-binary==2.9.9
 
