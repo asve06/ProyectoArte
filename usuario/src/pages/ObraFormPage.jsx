@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ObraFormPage() {
+export function ObraFormPage() {
   return (
     <div>ObraFormPage</div>
   )
