@@ -127,7 +127,7 @@ export default function Album() {
                       </Typography>
                     </CardContentStyled>
                     <CardActions>
-                      <Button size="small" color="primary" onClick={() => navigate('/')}>
+                      <Button size="small" color="primary" onClick={() => navigate('/obradetail')}>
                         View
                       </Button>
                       <Button size="small" color="primary" onClick={() => handleOpen('edit')}>
@@ -157,7 +157,7 @@ export default function Album() {
         >
           <Box sx={modalStyle}>
             <Typography id="modal-title" variant="h6" component="h2">
-              {modalType === 'edit' ? 'Edit Details' : 'Horizonte de los eventos'}
+              {modalType === 'edit' ? 'Horizonte de los eventos' : 'Horizonte de los eventos'}
             </Typography>
             <CardMedia
               component="img"
@@ -167,7 +167,8 @@ export default function Album() {
             />
             {modalType === 'edit' && (
               <Box sx={{ mt: 2 }}>
-                <Typography>Edit form will be here</Typography>
+                <Typography>                        Una representación abstracta y vibrante que explora los límites de la percepción visual y espacial.
+                </Typography>
               </Box>
             )}
           </Box>
