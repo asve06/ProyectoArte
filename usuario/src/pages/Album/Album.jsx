@@ -1,23 +1,12 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography, Container, Link } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography, Container, Link, Modal, Box } from '@mui/material';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import Layout from './Dashboard/Layout'; 
+import { useNavigate } from 'react-router-dom'; 
+import Layout from '../Dashboard/Layout';
+import ObraImage from './ETObra.jpg'; 
 
-// Crear el tema personalizado
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#556cd6',
-    },
-    secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: '#f44336',
-    },
-    background: {
-      default: '#fff',
-    },
-  },
+  // Agrega tu tema aquí
 });
 
 const HeroContent = styled('div')(({ theme }) => ({
@@ -53,6 +42,18 @@ const Footer = styled('footer')(({ theme }) => ({
   padding: theme.spacing(6),
 }));
 
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80%',
+  maxHeight: '80%',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -69,30 +70,39 @@ function Copyright() {
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function Album() {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [modalType, setModalType] = useState('edit'); 
+
+  const handleOpen = (type) => {
+    setModalType(type);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
   return (
     <ThemeProvider theme={theme}>
       <Layout>
         <main>
           <HeroContent>
             <Container maxWidth="sm">
-              <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                Album layout
+              <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom style={{ fontStyle: 'oblique', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+                Album Layout
               </Typography>
-              <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                Something short and leading about the collection below—its contents, the creator, etc.
-                Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-                entirely.
+              <Typography variant="h6" align="center" color="textSecondary" paragraph style={{ textAlign: 'justify' }}>
+                Esta fascinante colección de Enrique Tábara, un maestro del arte contemporáneo ecuatoriano, presenta una selección de sus obras más icónicas, donde la abstracción y el informalismo cobran vida a través de técnicas innovadoras y una paleta vibrante. Cada pieza es un testimonio de su visión única y su pasión por explorar los límites de la creatividad. ¡Disfruta de este viaje artístico y déjate inspirar por la genialidad de Tábara!
               </Typography>
               <HeroButtons>
                 <Grid container spacing={2} justifyContent="center">
                   <Grid item>
                     <Button variant="contained" color="primary">
-                      Main call to action
+                      Botón
                     </Button>
                   </Grid>
                   <Grid item>
                     <Button variant="outlined" color="primary">
-                      Secondary action
+                      Botón 2
                     </Button>
                   </Grid>
                 </Grid>
@@ -105,22 +115,22 @@ export default function Album() {
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <CardStyled>
                     <CardMediaStyled
-                      image="https://source.unsplash.com/random"
-                      title="Image title"
+                      image={ObraImage}
+                      title="Horizonte de los eventos"
                     />
                     <CardContentStyled>
                       <Typography gutterBottom variant="h5" component="h2">
-                        Heading
+                        Horizonte de los eventos
                       </Typography>
                       <Typography>
-                        This is a media card. You can use this section to describe the content.
+                        Una representación abstracta y vibrante que explora los límites de la percepción visual y espacial.
                       </Typography>
                     </CardContentStyled>
                     <CardActions>
-                      <Button size="small" color="primary">
+                      <Button size="small" color="primary" onClick={() => navigate('/')}>
                         View
                       </Button>
-                      <Button size="small" color="primary">
+                      <Button size="small" color="primary" onClick={() => handleOpen('edit')}>
                         Edit
                       </Button>
                     </CardActions>
@@ -139,6 +149,29 @@ export default function Album() {
           </Typography>
           <Copyright />
         </Footer>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          <Box sx={modalStyle}>
+            <Typography id="modal-title" variant="h6" component="h2">
+              {modalType === 'edit' ? 'Edit Details' : 'Horizonte de los eventos'}
+            </Typography>
+            <CardMedia
+              component="img"
+              image={ObraImage}
+              alt="Obra"
+              style={{ width: '70%', height: 'auto' }}
+            />
+            {modalType === 'edit' && (
+              <Box sx={{ mt: 2 }}>
+                <Typography>Edit form will be here</Typography>
+              </Box>
+            )}
+          </Box>
+        </Modal>
       </Layout>
     </ThemeProvider>
   );

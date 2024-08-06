@@ -1,8 +1,7 @@
 import React from 'react';
-import Layout from './Dashboard/Layout';
+import Layout from '../Dashboard/Layout';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 
-//Aqui debemos conectarlo con la bd
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
   { id: 'titulo', label: 'Título', minWidth: 150 },
@@ -18,23 +17,24 @@ const columns = [
   { id: 'adicionales', label: 'Adicionales', minWidth: 100 },
 ];
 
-// Crear datos de la tabla
+//Datos inventados :)
 const rows = [
   {
     id: 1,
-    titulo: 'Sol radiante',
-    fecha_creacion: '2024-07-24',
+    titulo: 'Horizonte de los eventos',
+    fecha_creacion: '1962-06-15',
     autor: 'Enrique Tábara',
-    dimensiones: '60x700',
+    dimensiones: '150x200 cm',
     categoria: 'Pintura',
-    ubicacion: 'Francia',
-    tecnica: 'Puntillismo',
+    ubicacion: 'Museo de Arte Contemporáneo, Quito',
+    tecnica: 'Acrílico sobre lienzo',
     movimiento: 'Realismo',
-    estado_conservacion: 'Buena',
-    descripcion: 'Sol radiante es una obra de un sol radiante',
-    adicionales: 'Obra'
+    estado_conservacion: 'Excelente',
+    descripcion: 'Una representación abstracta y vibrante que explora los límites de la percepción visual y espacial.',
+    adicionales: 'Parte de la serie "Mundos Paralelos"'
   }
 ];
+
 
 // Componente de la tabla con diseño sticky
 export default function StickyHeadTable() {
