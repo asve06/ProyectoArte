@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -84,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ObrasArte',
-        'USER': 'asve', #asve
-        'PASSWORD': 'asdf', #asdf
+        'USER': 'postgres', #asve
+        'PASSWORD': '2318', #asdf
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -135,9 +135,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS authorization
 CORS_ALLOWED_ORIGINS = [
-    
+    "http://localhost:5173",
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
+
+# URL base para acceder a los archivos de medios
+MEDIA_URL = '/media/'
+
+# Ruta donde se almacenarán los archivos de medios
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

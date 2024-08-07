@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../Dashboard/Layout';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { getAllObras } from '../../api/obras.api';
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
@@ -15,29 +16,23 @@ const columns = [
   { id: 'estado_conservacion', label: 'Estado de Conservación', minWidth: 150 },
   { id: 'descripcion', label: 'Descripción', minWidth: 200 },
   { id: 'adicionales', label: 'Adicionales', minWidth: 100 },
+  { id: 'archivo', label: 'Archivo', minWidth: 100 },
 ];
-
-//Datos inventados :)
-const rows = [
-  {
-    id: 1,
-    titulo: 'Horizonte de los eventos',
-    fecha_creacion: '1962-06-15',
-    autor: 'Enrique Tábara',
-    dimensiones: '150x200 cm',
-    categoria: 'Pintura',
-    ubicacion: 'Museo de Arte Contemporáneo, Quito',
-    tecnica: 'Acrílico sobre lienzo',
-    movimiento: 'Realismo',
-    estado_conservacion: 'Excelente',
-    descripcion: 'Una representación abstracta y vibrante que explora los límites de la percepción visual y espacial.',
-    adicionales: 'Parte de la serie "Mundos Paralelos"'
-  }
-];
-
 
 // Componente de la tabla con diseño sticky
 export default function StickyHeadTable() {
+  
+  const [obras, setObras] = useState([]);
+
+  useEffect(() => {
+    async function loadObras() {
+      const res = await getAllObras();
+      setObras(res.data);
+      console.log(res.data)
+    }
+    loadObras();
+  }, []);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -53,7 +48,7 @@ export default function StickyHeadTable() {
   return (
     <Layout>
       <Paper sx={{ width: '100%', overflow: 'hidden', mt: 2 }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 700 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -69,7 +64,7 @@ export default function StickyHeadTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {obras
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
@@ -77,7 +72,35 @@ export default function StickyHeadTable() {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {value}
+                            {column.id === 'archivo' ? (
+                              value ? (
+                                <>
+                                  {value.endsWith('.pdf') ? (
+                                    // Para PDF, usa <embed> para mostrar el archivo
+                                    <div>
+                                      <embed src={value} type="application/pdf" width="100px" height="100px" />
+                                      <br />
+                                      <a href={value} target="_blank" rel="noopener noreferrer">
+                                        Ver Archivo
+                                      </a>
+                                    </div>
+                                  ) : (
+                                    // Para imágenes, usa <img> para mostrar la imagen
+                                    <div>
+                                      <img src={value} alt="Archivo" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+                                      <br />
+                                      <a href={value} target="_blank" rel="noopener noreferrer">
+                                        Ver Archivo
+                                      </a>
+                                    </div>
+                                  )}
+                                </>
+                              ) : (
+                                'No Disponible'
+                              )
+                            ) : (
+                              value
+                            )}
                         </TableCell>
                       );
                     })}
@@ -89,7 +112,7 @@ export default function StickyHeadTable() {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={obras.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

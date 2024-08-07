@@ -1,7 +1,7 @@
 import { Drawer, IconButton, Divider, List } from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { mainListItems } from './ListItems';
+import { mainListItems } from './listItems';
 
 const drawerWidth = 180;
 

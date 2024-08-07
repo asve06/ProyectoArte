@@ -12,6 +12,7 @@ class Obra(models.Model):
     estado_conservacion = models.CharField(max_length=255)
     descripcion = models.TextField()
     adicionales = models.TextField(null=True, blank=True)
-
+    archivo = models.FileField(upload_to='obras/', null=True, blank=True)
+    
     def __str__(self):
         return self.titulo
