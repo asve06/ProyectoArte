@@ -28,7 +28,6 @@ export default function StickyHeadTable() {
     async function loadObras() {
       const res = await getAllObras();
       setObras(res.data);
-      console.log(res.data)
     }
     loadObras();
   }, []);

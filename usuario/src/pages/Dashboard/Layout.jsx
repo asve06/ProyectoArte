@@ -3,6 +3,7 @@ import { AppBar, Box, CssBaseline, IconButton, Link, Toolbar, Typography, Contai
 import { Menu as MenuIcon, Notifications as NotificationsIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Sidebar from './Sidebar';
+/* eslint-disable react/prop-types */
 
 const theme = createTheme({
   palette: {
