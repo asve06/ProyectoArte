@@ -35,3 +35,5 @@ python manage.py migrate obras
 
 #Modulos 
 npm i react-router-dom react-hot-toast axios react-hook-form
+
+eval "$(fnm env --use-on-cd)"
