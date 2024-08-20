@@ -1,13 +1,8 @@
-import React, { useState, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography, Container, Link, Modal, Box } from '@mui/material';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom'; 
-import Layout from '../Dashboard/Layout';
+import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 import { getAllObras } from '../../api/obras.api';
-
-const theme = createTheme({
-  // Agrega tu tema aquí
-});
 
 const HeroContent = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -22,20 +17,20 @@ const CardGrid = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(8),
 }));
 
-const CardStyled = styled(Card)(({ theme }) => ({
+const CardStyled = styled(Card)((  ) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
 }));
 
-const CardGridStyle = styled(CardGrid)(({ theme }) => ({  
+const CardGridStyle = styled(CardGrid)(( ) => ({  
 }));
 
-const CardMediaStyled = styled(CardMedia)(({ theme }) => ({
+const CardMediaStyled = styled(CardMedia)(( ) => ({
   paddingTop: '56.25%', // 16:9
 }));
 
-const CardContentStyled = styled(CardContent)(({ theme }) => ({
+const CardContentStyled = styled(CardContent)(( ) => ({
   flexGrow: 1,
 }));
 
@@ -56,7 +51,7 @@ const modalStyle = {
   p: 4,
 };
 
-function Copyright() {
+/*function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
@@ -67,7 +62,7 @@ function Copyright() {
       {'.'}
     </Typography>
   );
-}
+}*/
 
 export default function Album() {
   const navigate = useNavigate();
@@ -95,11 +90,10 @@ export default function Album() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Layout>
+    <>
         <main>
           <HeroContent>
-            <Container maxWidth="sm">
+            <Container maxWidth="lg">
               <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom style={{ fontStyle: 'oblique', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
                 Album
               </Typography>
@@ -145,7 +139,7 @@ export default function Album() {
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
             Something here to give the footer a purpose!
           </Typography>
-          <Copyright />
+          {/* <Copyright /> */}
         </Footer>
         <Modal
           open={open}
@@ -172,7 +166,6 @@ export default function Album() {
             )}
           </Box>
         </Modal>
-      </Layout>
-    </ThemeProvider>
+    </>
   );
 }
