@@ -1,25 +1,24 @@
 import { Drawer, IconButton, Divider, List } from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { mainListItems } from './listItems';
+import { mainListItems } from './ListItems';
+import PropTypes from 'prop-types';
 
 const drawerWidth = 180;
+const drawerWidthCollapsed = 60;
 
 const DrawerStyled = styled(Drawer)(({ theme, open }) => ({
-  width: drawerWidth,
+  width: open ? drawerWidth : drawerWidthCollapsed,
   flexShrink: 0,
   '& .MuiDrawer-paper': {
-    width: drawerWidth,
+    width: open ? drawerWidth : drawerWidthCollapsed,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    overflowX: 'hidden',
     ...(open === false && {
-      overflowX: 'hidden',
-      width: theme.spacing(7),
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9),
-      },
+      width: drawerWidthCollapsed,
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -42,3 +41,8 @@ export default function Sidebar({ open, handleDrawerToggle }) {
     </DrawerStyled>
   );
 }
+
+Sidebar.propTypes = {
+  open: PropTypes.bool.isRequired, // Indica si el sidebar está abierto o cerrado
+  handleDrawerToggle: PropTypes.func.isRequired, // Función para abrir o cerrar el sidebar
+};

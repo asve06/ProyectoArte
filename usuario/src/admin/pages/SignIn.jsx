@@ -1,20 +1,20 @@
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import BackgroundImage from './ET.jpg'; 
+import BackgroundImage from '../../assets/images/ET.jpg'; 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+// function Copyright() {
+//   return (
+//     <Typography variant="body2" color="textSecondary" align="center">
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://mui.com/">
+//         Your Website
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 
 const theme = createTheme({
   palette: {
@@ -206,9 +206,9 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
               </Grid>
-              <Box mt={5}>
+              {/* <Box mt={5}>
                 <Copyright />
-              </Box>
+              </Box> */}
             </Box>
           </Box>
         </Grid>

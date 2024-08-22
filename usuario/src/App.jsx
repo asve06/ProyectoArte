@@ -1,19 +1,17 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Album from './pages/Album/Album'; 
-import SignIn from './pages/SignIn/SignIn';
-import Obras from './pages/Obras/Obras';
-import ObraDetail from './pages/Album/ObraDetail';
+// import AdminApp from './admin/AdminApp';
+import UserApp from './user/UserApp';
+import AdminApp from './admin/AdminApp';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/album" element={<Album />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/obras" element={<Obras />} />
-        <Route path="/obradetail/:id" element={<ObraDetail />} />
+        {/* Rutas para el panel de administración */}
+        <Route path="/admin/*" element={<AdminApp />} />
+        
+        {/* Rutas para la interfaz de usuario */}
+        <Route path="/*" element={<UserApp />} />
       </Routes>
     </Router>
   );

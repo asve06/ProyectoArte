@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import { AppBar, Box, CssBaseline, IconButton, Link, Toolbar, Typography, Container, Badge } from '@mui/material';
 import { Menu as MenuIcon, Notifications as NotificationsIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Sidebar from './Sidebar';
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 
 const theme = createTheme({
   palette: {
@@ -40,37 +40,15 @@ const AppBarStyled = styled(AppBar)(({ theme, open }) => ({
   }),
 }));
 
-const DrawerPaperStyled = styled('div')(({ theme, open }) => ({
-  position: 'relative',
-  whiteSpace: 'nowrap',
-  width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  ...(open === false && {
-    overflowX: 'hidden',
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  }),
-}));
-
 const AppBarSpacer = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const ContentStyled = styled('main')(({ open }) => ({
+const ContentStyled = styled('main')(() => ({
   flexGrow: 1,
   height: '100vh',
   overflow: 'auto',
-  marginLeft: open ? drawerWidth : 0,
-  transition: 'margin 0.3s',
+  transition: 'margin 0.3 ease',
 }));
 
 const ContainerStyled = styled(Container)(({ theme }) => ({
@@ -79,29 +57,30 @@ const ContainerStyled = styled(Container)(({ theme }) => ({
 }));
 
 // Componente Copyright
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Link      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+// function Copyright() {
+//   return (
+//     <Typography variant="body2" color="textSecondary" align="center">
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://mui.com/">
+//         Link      </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 
 // Componente principal Layout
 export default function Layout({ children }) {
-  const [open, setOpen] = React.useState(false); //el alse de aqui es para que sea cerrado por default 
+  const [open, setOpen] = useState(false); //el alse de aqui es para que sea cerrado por default 
 
   const handleDrawerToggle = () => {
     setOpen(prevOpen => !prevOpen);
+    console.log(open);
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{ display: 'flex' }}>
+      <Box style={{ display: 'flex' }}>
         <CssBaseline />
         <AppBarStyled position="absolute" open={open}>
           <Toolbar>
@@ -124,19 +103,21 @@ export default function Layout({ children }) {
             </IconButton>
           </Toolbar>
         </AppBarStyled>
-        <DrawerPaperStyled open={open}>
-          <Sidebar open={open} handleDrawerToggle={handleDrawerToggle} />
-        </DrawerPaperStyled>
+        <Sidebar open={open} handleDrawerToggle={handleDrawerToggle} />
         <ContentStyled open={open}>
           <AppBarSpacer />
           <ContainerStyled maxWidth="lg">
             {children}
-            <Box pt={4}>
+            {/* <Box pt={4}>
               <Copyright />
-            </Box>
+            </Box> */}
           </ContainerStyled>
         </ContentStyled>
-      </div>
+      </Box>
     </ThemeProvider>
   );
+}
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired, // children es un nodo requerido para renderizar
 }

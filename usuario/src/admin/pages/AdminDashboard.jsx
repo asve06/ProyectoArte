@@ -1,6 +1,5 @@
-import Layout from './Layout';
 import { Container, Typography, Box, Paper, styled } from '@mui/material';
-import BackgroundImage from './ET1.jpeg'; 
+import BackgroundImage from '../../assets/images/ET1.jpeg'; // Importar imagen de fondo
 
 //Cuadro de bienvenidoooo
 const WelcomeBox = styled(Paper)(({ theme }) => ({
@@ -14,7 +13,6 @@ const WelcomeBox = styled(Paper)(({ theme }) => ({
 
 const Dashboard = () => {
   return (
-    <Layout>
       <Container maxWidth="md" sx={{ textAlign: 'center' }}> {/* Centrar contenido del contenedor */}
         {/* Foto */}
         <Box 
@@ -46,7 +44,6 @@ const Dashboard = () => {
           </Typography>
         </WelcomeBox>
       </Container>
-    </Layout>
   );
 };
 

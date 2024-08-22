@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../Dashboard/Layout';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import { getAllObras } from '../../api/obras.api';
 
@@ -45,13 +44,12 @@ export default function StickyHeadTable() {
   };
 
   return (
-    <Layout>
       <Paper sx={{ width: '100%', overflow: 'hidden', mt: 2 }}>
         <TableContainer sx={{ maxHeight: 700 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
+                {columns.map( (column) => (
                   <TableCell
                     key={column.id}
                     align={column.align}
@@ -118,6 +116,5 @@ export default function StickyHeadTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-    </Layout>
   );
 }
