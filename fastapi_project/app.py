@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routers import autor, categoria, movimiento, multimedia, newsletter, obra, pintura, publicacion, tecnica, ubicacion, usuario
+from routers.auth import auth
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -38,3 +39,4 @@ app.include_router(publicacion)
 app.include_router(tecnica)
 app.include_router(ubicacion)
 app.include_router(usuario)
+app.include_router(auth)

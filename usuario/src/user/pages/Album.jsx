@@ -110,7 +110,7 @@ export default function Album() {
                 <Grid item key={obra.id} xs={12} sm={6} md={3}>
                   <CardStyled>
                     <CardMediaStyled
-                      image={obra.archivo}
+                      image={obra.url_imagen || 'http://127.0.0.1:8000/static/images/default.jpg'}
                       title={obra.titulo}
                     />
                     <CardContentStyled>

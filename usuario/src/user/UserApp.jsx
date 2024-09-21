@@ -1,4 +1,4 @@
-import Layout from './components/Layout'; // Tu componente Layout
+import Layout from '../common/components/Layout'; // Tu componente Layout
 import UserRoutes from './routes/UserRoutes'; // Archivo de rutas
 import { Route, Routes } from 'react-router-dom';
 

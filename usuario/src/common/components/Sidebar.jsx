@@ -1,7 +1,8 @@
 import { Drawer, IconButton, Divider, List } from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { mainListItems } from './ListItems';
+import { mainListItemsUser } from '../../user/components/UserListItems';
+import { mainListItemsAdmin } from '../../admin/components/AdminListItems';
 import PropTypes from 'prop-types';
 
 const drawerWidth = 180;
@@ -27,7 +28,9 @@ const DrawerStyled = styled(Drawer)(({ theme, open }) => ({
   },
 }));
 
-export default function Sidebar({ open, handleDrawerToggle }) {
+export default function Sidebar({ open, handleDrawerToggle, role }) {
+  const listItem = role === 'admin' ? mainListItemsAdmin : mainListItemsUser;
+
   return (
     <DrawerStyled variant="permanent" open={open}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 8px', height: '64px' }}>
@@ -36,7 +39,7 @@ export default function Sidebar({ open, handleDrawerToggle }) {
         </IconButton>
       </div>
       <Divider />
-      <List>{mainListItems}</List>
+      <List>{listItem}</List>
       <Divider />
     </DrawerStyled>
   );
@@ -45,4 +48,5 @@ export default function Sidebar({ open, handleDrawerToggle }) {
 Sidebar.propTypes = {
   open: PropTypes.bool.isRequired, // Indica si el sidebar está abierto o cerrado
   handleDrawerToggle: PropTypes.func.isRequired, // Función para abrir o cerrar el sidebar
+  role: PropTypes.oneOf(['user','admin']).isRequired, // Rol del usuario
 };
