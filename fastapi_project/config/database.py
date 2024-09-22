@@ -2,7 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql://postgres:2318@localhost:5432/ObrasArte"
+#DATABASE_URL = "postgresql://postgres:2318@localhost:5432/ObrasArte"
+DATABASE_URL = "postgresql://asve:asdf@localhost:5432/ObrasArte"
 
 # Crear una instancia del motor de base de datos
 engine = create_engine(DATABASE_URL)

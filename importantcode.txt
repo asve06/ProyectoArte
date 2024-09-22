@@ -37,3 +37,15 @@ python manage.py migrate obras
 npm i react-router-dom react-hot-toast axios react-hook-form
 
 eval "$(fnm env --use-on-cd)"
+npm run dev 
+
+#Fastapi
+cd fastapi_project
+uvicorn app:app --reload
+
+#Crea un archivo de migración basado en los cambios detectados en los modelos de base de datos.
+alembic revision --autogenerate -m "Initial migration"
+
+#Aplica las migraciones pendientes a la base de datos, llevándola a la última versión.
+alembic upgrade head
+
