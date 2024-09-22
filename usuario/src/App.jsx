@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import AdminApp from './admin/AdminApp';
 import UserApp from './user/UserApp';
 import AdminApp from './admin/AdminApp';
 

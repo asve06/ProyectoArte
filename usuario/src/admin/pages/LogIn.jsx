@@ -2,6 +2,9 @@ import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Lin
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BackgroundImage from '../../assets/images/ET.jpg'; 
+import { useState } from 'react';
+import { login } from '../../api/auth.api';
+import { useNavigate } from 'react-router-dom';
 
 // function Copyright() {
 //   return (
@@ -86,7 +89,25 @@ const theme = createTheme({
   },
 });
 
+
 export default function SignInSide() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await login(email, password);
+      // Guardar el token en el almacenamiento local o en el estado global
+      localStorage.setItem('admin-auth', data.access_token);
+      console.log(data);
+      navigate('/admin/dashboard');
+    }catch (error){
+      setError('Invalid email or password');
+    }
+  }
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -159,7 +180,7 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+            <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -170,6 +191,8 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 variant="outlined"
@@ -181,7 +204,14 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
+              {error && (
+                <Typography color="error" variant="body2">
+                  {error}
+                </Typography>
+              )}
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"

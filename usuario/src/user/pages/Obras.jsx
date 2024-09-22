@@ -6,16 +6,16 @@ const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
   { id: 'titulo', label: 'Título', minWidth: 150 },
   { id: 'fecha_creacion', label: 'Fecha de Creación', minWidth: 150 },
-  { id: 'autor', label: 'Autor', minWidth: 150 },
-  { id: 'dimensiones', label: 'Dimensiones', minWidth: 100 },
-  { id: 'categoria', label: 'Categoría', minWidth: 100 },
-  { id: 'ubicacion', label: 'Ubicación', minWidth: 100 },
-  { id: 'tecnica', label: 'Técnica', minWidth: 100 },
-  { id: 'movimiento', label: 'Movimiento', minWidth: 100 },
-  { id: 'estado_conservacion', label: 'Estado de Conservación', minWidth: 150 },
+  { id: 'autor_id', label: 'Autor', minWidth: 150 },
+  //{ id: 'dimensiones', label: 'Dimensiones', minWidth: 100 },
+  //{ id: 'categoria', label: 'Categoría', minWidth: 100 },
+  { id: 'ubicacion_id', label: 'Ubicación', minWidth: 100 },
+  //{ id: 'tecnica', label: 'Técnica', minWidth: 100 },
+  //{ id: 'movimiento', label: 'Movimiento', minWidth: 100 },
+  //{ id: 'estado_conservacion', label: 'Estado de Conservación', minWidth: 150 },
   { id: 'descripcion', label: 'Descripción', minWidth: 200 },
   { id: 'adicionales', label: 'Adicionales', minWidth: 100 },
-  { id: 'archivo', label: 'Archivo', minWidth: 100 },
+  { id: 'url_imagen', label: 'Archivo', minWidth: 100 },
 ];
 
 // Componente de la tabla con diseño sticky
@@ -69,7 +69,7 @@ export default function StickyHeadTable() {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                            {column.id === 'archivo' ? (
+                            {column.id === 'url_imagen' ? (
                               value ? (
                                 <>
                                   {value.endsWith('.pdf') ? (
@@ -96,7 +96,7 @@ export default function StickyHeadTable() {
                                 'No Disponible'
                               )
                             ) : (
-                              value
+                              typeof value === 'object' ? JSON.stringify(value) : value
                             )}
                         </TableCell>
                       );
