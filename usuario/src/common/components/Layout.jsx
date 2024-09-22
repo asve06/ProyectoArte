@@ -4,7 +4,8 @@ import { Menu as MenuIcon, Logout as LogoutIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Sidebar from './Sidebar';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../admin/context/useAuth';
 
 const theme = createTheme({
   palette: {
@@ -75,6 +76,8 @@ export default function Layout({ children }) {
   const [open, setOpen] = useState(false); //el alse de aqui es para que sea cerrado por default 
   const location = useLocation();
   const role = location.pathname.startsWith('/admin') ? 'admin' : 'user';
+  const navigate = useNavigate();
+  //const { setIsAuthenticated } = useAuth();
 
   const handleDrawerToggle = () => {
     setOpen(prevOpen => !prevOpen);
@@ -82,7 +85,8 @@ export default function Layout({ children }) {
 
   const handleLogout = () => {
     localStorage.removeItem('admin-auth');
-    window.location.href = '/admin/login';
+    //setIsAuthenticated(false);
+    navigate('/admin/login');
   }
 
   return (

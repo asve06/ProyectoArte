@@ -1,16 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import LogIn from '../pages/LogIn';
 import AdminDashboard from '../../common/components/Dashboard';
 import AdminLayout from '../../common/components/Layout';
+import { useAuth } from '../context/useAuth';
 
-function AdminRoutes() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  useEffect(() => {
-    const token = localStorage.getItem('admin-auth');
-    setIsAuthenticated(!!token);
-  }, []);
+function AdminRoutes() {  
+
+  const { isAuthenticated } = useAuth();
  
   return (
     <Routes>
