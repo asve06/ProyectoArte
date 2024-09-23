@@ -77,7 +77,7 @@ export default function Layout({ children }) {
   const location = useLocation();
   const role = location.pathname.startsWith('/admin') ? 'admin' : 'user';
   const navigate = useNavigate();
-  //const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated } = useAuth();
 
   const handleDrawerToggle = () => {
     setOpen(prevOpen => !prevOpen);
@@ -85,7 +85,7 @@ export default function Layout({ children }) {
 
   const handleLogout = () => {
     localStorage.removeItem('admin-auth');
-    //setIsAuthenticated(false);
+    setIsAuthenticated(false);
     navigate('/admin/login');
   }
 
