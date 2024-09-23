@@ -1,16 +1,16 @@
+// Obras.js
 import { useEffect, useState } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, IconButton, TextField, Select, MenuItem, Button, Box } from '@mui/material';
 import { getAllObras } from '../../api/obras.api';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Lupa from '@mui/icons-material/SearchOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteRounded';
+import { FilterManager } from './FilterManager'; 
 
-export default function StickyHeadTable() {
+export default function Obras() {
   const [obras, setObras] = useState([]);
   const [sortModel, setSortModel] = useState({ field: '', direction: 'asc' });
-  const [generalFilter, setGeneralFilter] = useState('');
-  const [generalFilterVisible, setGeneralFilterVisible] = useState(false);
-  const [advancedFilters, setAdvancedFilters] = useState([]);
+  const [filterManager] = useState(new FilterManager());
 
   useEffect(() => {
     async function loadObras() {
@@ -37,86 +37,7 @@ export default function StickyHeadTable() {
     setSortModel({ field: columnId, direction: isAsc ? 'desc' : 'asc' });
   };
 
-  const handleAddAdvancedFilter = () => {
-    setAdvancedFilters([...advancedFilters, { column: '', operator: 'contiene', value: '', range: false }]);
-  };
-
-  const handleAdvancedFilterChange = (index, field, value) => {
-    const newFilters = [...advancedFilters];
-    newFilters[index][field] = value;
-    setAdvancedFilters(newFilters);
-  };
-
-  const handleRemoveAdvancedFilter = (index) => {
-    setAdvancedFilters(advancedFilters.filter((_, i) => i !== index));
-  };
-
-  const getAvailableOperators = (columnType) => {
-    switch (columnType) {
-      case 'number':
-        return ['=', '>', '<'];
-      case 'text':
-        return ['contiene', 'no contiene', 'comienza con', 'termina con'];
-      case 'date':
-        return ['antes de', 'después de', 'en', 'entre'];
-      default:
-        return ['='];
-    }
-  };
-
-  const getColumnType = (columnName) => {
-    if (['id', 'price', 'quantity'].includes(columnName)) {
-      return 'number';
-    }
-    if (['fecha_creacion'].includes(columnName)) {
-      return 'date';
-    }
-    if (['descripcion', 'url_imagen'].includes(columnName)) {
-      return 'text';
-    }
-    return 'text';
-  };
-
-  const applyAdvancedFilter = (row, { column, operator, value }) => {
-    if (!value) return true;
-    const rowValue = row[column];
-
-    switch (operator) {
-      case 'contiene':
-        return String(rowValue).toLowerCase().includes(value.toLowerCase());
-      case 'no contiene':
-        return !String(rowValue).toLowerCase().includes(value.toLowerCase());
-      case 'comienza con':
-        return String(rowValue).toLowerCase().startsWith(value.toLowerCase());
-      case 'termina con':
-        return String(rowValue).toLowerCase().endsWith(value.toLowerCase());
-      case '>':
-        return rowValue > value;
-      case '<':
-        return rowValue < value;
-      case '=':
-        return String(rowValue) === String(value);
-      case 'antes de':
-        return new Date(rowValue) < new Date(value);
-      case 'después de':
-        return new Date(rowValue) > new Date(value);
-      case 'en':
-        return new Date(rowValue).toDateString() === new Date(value).toDateString();
-      case 'entre':
-        const [start, end] = value;
-        return new Date(rowValue) >= new Date(start) && new Date(rowValue) <= new Date(end);
-      default:
-        return true;
-    }
-  };
-
-  const filteredObras = obras.filter(row => {
-    const matchesGeneralFilter = Object.values(row).some(value =>
-      String(value).toLowerCase().includes(generalFilter.toLowerCase())
-    );
-
-    return matchesGeneralFilter && advancedFilters.every(filter => applyAdvancedFilter(row, filter));
-  });
+  const filteredObras = filterManager.filterObras(obras);
 
   const sortedObras = filteredObras.slice().sort((a, b) => {
     if (!sortModel.field) return 0;
@@ -142,7 +63,9 @@ export default function StickyHeadTable() {
                   ID
                 </TableSortLabel>
               </TableCell>
-              {obras.length > 0 && Object.keys(obras[0]).map((key) => (
+              {obras.length > 0 && Object.keys(obras[0])
+                .filter((key) => key !== 'id')
+                .map((key) => (
                 <TableCell key={key}>
                   <TableSortLabel
                     active={sortModel.field === key}
@@ -155,49 +78,52 @@ export default function StickyHeadTable() {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {sortedObras
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                  <TableCell>{row.id}</TableCell>
-                  {Object.keys(row).map((key) => {
-                    const value = row[key];
-                    return (
-                      <TableCell key={key}>
-                        {key === 'url_imagen' ? (
-                          value ? (
-                            <div>
-                              <img 
-                                src={value} 
-                                alt="Obra" 
-                                style={{ maxWidth: '100px', maxHeight: '90px' }} 
-                              />
-                              <br />
-                              <a href={value} target="_blank" rel="noopener noreferrer">
-                                Ver Archivo
-                              </a>
-                            </div>
-                          ) : (
-                            'No Disponible'
-                          )
-                        ) : (
-                          typeof value === 'object' ? JSON.stringify(value) : value
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-          </TableBody>
+<TableBody>
+  {sortedObras
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .map((row) => (
+      <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+        {/* Muestra la columna ID al inicio */}
+        <TableCell>{row.id}</TableCell>
+        {/* para no repetir la columna */}
+        {Object.keys(row).filter(key => key !== 'id').map((key) => {
+          const value = row[key];
+          return (
+            <TableCell key={key}>
+              {key === 'url_imagen' ? (
+                value ? (
+                  <div>
+                    <img 
+                      src={value} 
+                      alt="Obra" 
+                      style={{ maxWidth: '100px', maxHeight: '90px' }} 
+                    />
+                    <br />
+                    <a href={value} target="_blank" rel="noopener noreferrer">
+                      Ver Archivo
+                    </a>
+                  </div>
+                ) : (
+                  'No Disponible'
+                )
+              ) : (
+                typeof value === 'object' ? JSON.stringify(value) : value
+              )}
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    ))}
+</TableBody>
+
         </Table>
       </TableContainer>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton onClick={() => setGeneralFilterVisible(!generalFilterVisible)}>
+          <IconButton onClick={() => filterManager.toggleGeneralFilterVisibility()}>
             <Lupa />
           </IconButton>
-          {generalFilterVisible && (
+          {filterManager.generalFilterVisible && (
             <Box
               sx={{
                 padding: 2,
@@ -211,18 +137,18 @@ export default function StickyHeadTable() {
               <TextField
                 variant="outlined"
                 size="small"
-                value={generalFilter}
-                onChange={(e) => setGeneralFilter(e.target.value)}
+                value={filterManager.generalFilter}
+                onChange={(e) => filterManager.setGeneralFilter(e.target.value)}
                 placeholder="Ingresa tu busqueda"
                 style={{ marginBottom: '10px', width: '100%' }}
               />
-              {advancedFilters.map((filter, index) => (
+              {filterManager.advancedFilters.map((filter, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                   <Select
                     value={filter.column}
                     onChange={(e) => {
-                      handleAdvancedFilterChange(index, 'column', e.target.value);
-                      handleAdvancedFilterChange(index, 'value', ''); // Limpiar el valor si cambia la columna
+                      filterManager.updateAdvancedFilter(index, 'column', e.target.value);
+                      filterManager.updateAdvancedFilter(index, 'value', ''); // Limpiar el valor si cambia la columna
                     }}
                     style={{ marginRight: '10px' }}
                   >
@@ -234,10 +160,10 @@ export default function StickyHeadTable() {
                   </Select>
                   <Select
                     value={filter.operator}
-                    onChange={(e) => handleAdvancedFilterChange(index, 'operator', e.target.value)}
+                    onChange={(e) => filterManager.updateAdvancedFilter(index, 'operator', e.target.value)}
                     style={{ marginRight: '10px' }}
                   >
-                    {getAvailableOperators(getColumnType(filter.column)).map(op => (
+                    {filterManager.getAvailableOperators(filterManager.getColumnType(filter.column)).map(op => (
                       <MenuItem value={op} key={op}>
                         {op}
                       </MenuItem>
@@ -249,7 +175,7 @@ export default function StickyHeadTable() {
                         variant="outlined"
                         size="small"
                         value={filter.value[0]}
-                        onChange={(e) => handleAdvancedFilterChange(index, 'value', [e.target.value, filter.value[1]])}
+                        onChange={(e) => filterManager.updateAdvancedFilter(index, 'value', [e.target.value, filter.value[1]])}
                         placeholder="Desde"
                         style={{ marginRight: '10px' }}
                       />
@@ -257,7 +183,7 @@ export default function StickyHeadTable() {
                         variant="outlined"
                         size="small"
                         value={filter.value[1]}
-                        onChange={(e) => handleAdvancedFilterChange(index, 'value', [filter.value[0], e.target.value])}
+                        onChange={(e) => filterManager.updateAdvancedFilter(index, 'value', [filter.value[0], e.target.value])}
                         placeholder="Hasta"
                         style={{ marginRight: '10px' }}
                       />
@@ -267,17 +193,17 @@ export default function StickyHeadTable() {
                       variant="outlined"
                       size="small"
                       value={filter.value}
-                      onChange={(e) => handleAdvancedFilterChange(index, 'value', e.target.value)}
+                      onChange={(e) => filterManager.updateAdvancedFilter(index, 'value', e.target.value)}
                       placeholder="Valor"
                       style={{ marginRight: '10px' }}
                     />
                   )}
-                  <IconButton onClick={() => handleRemoveAdvancedFilter(index)}>
+                  <IconButton onClick={() => filterManager.removeAdvancedFilter(index)}>
                     <DeleteIcon style={{ color: 'red' }} />
                   </IconButton>
                 </div>
               ))}
-              <Button variant="contained" onClick={handleAddAdvancedFilter} startIcon={<FilterAltIcon />}>
+              <Button variant="contained" onClick={() => filterManager.addAdvancedFilter()} startIcon={<FilterAltIcon />}>
                 Filtro Avanzado
               </Button>
             </Box>
