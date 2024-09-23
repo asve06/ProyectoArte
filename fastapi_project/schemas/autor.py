@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class AutorBase(BaseModel):
-    titulo: str
+    nombre: str
 
 
 # Clase para crear y validar los datos al crear un autor.
