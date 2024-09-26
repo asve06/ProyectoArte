@@ -5,6 +5,7 @@ import BackgroundImage from '../../assets/images/ET.jpg';
 import { useState } from 'react';
 import { login } from '../../api/auth.api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
 
 // function Copyright() {
 //   return (
@@ -95,6 +96,7 @@ export default function SignInSide() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,6 +104,7 @@ export default function SignInSide() {
       const data = await login(email, password);
       // Guardar el token en el almacenamiento local o en el estado global
       localStorage.setItem('admin-auth', data.access_token);
+      setIsAuthenticated(true);
       console.log(data);
       navigate('/admin/dashboard');
     }catch (error){
