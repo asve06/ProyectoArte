@@ -1,8 +1,16 @@
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserApp from './user/UserApp';
-import AdminApp from './admin/AdminApp';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+import UserApp from './user/UserApp'; // Asegúrate de que la ruta sea correcta
+import AdminApp from './admin/AdminApp'; // Asegúrate de que la ruta sea correcta
 
 function App() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <Router>
       <Routes>
