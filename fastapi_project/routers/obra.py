@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from models.obra import Obra
+from sqlalchemy import text
 from config.database import get_db
 from schemas.obra import ObraCreate, ObraRead
 from starlette.status import HTTP_204_NO_CONTENT
@@ -11,7 +12,8 @@ obra = APIRouter()
 # Definir las ruta get, post, get por id, delete y put
 @obra.get("/obras", response_model=list[ObraRead], tags=["obras"])
 def get_obras(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
-    return db.query(Obra).offset(skip).limit(limit).all()
+    result = db.execute(text("SELECT * FROM get_obras_funct() OFFSET :skip LIMIT :limit"), {"skip":skip, "limit":limit})
+    return result.fetchall()
 
 @obra.post("/obras", response_model=ObraRead, tags=["obras"])
 def create_obras(obra: ObraCreate, db: Session = Depends(get_db)):
@@ -23,10 +25,11 @@ def create_obras(obra: ObraCreate, db: Session = Depends(get_db)):
 
 @obra.get("/obras/{obra_id}", response_model=ObraRead, tags=["obras"])
 def read_obra(obra_id: int, db: Session = Depends(get_db)):
-    db_obra = db.query(Obra).filter(Obra.id == obra_id).first()
-    if db_obra is None:
+    result = db.execute(text("SELECT * FROM get_obras_funct() WHERE id = :id"), {"id": obra_id})
+    row = result.fetchone()
+    if row is None:
         raise HTTPException(status_code=404, detail="Obra not found") # Si no se encuentra la obra, devolver un error 404
-    return db_obra # Devolver la obra encontrada
+    return row # Devolver la obra encontrada
 
 @obra.delete("/obras/{obra_id}", status_code= status.HTTP_204_NO_CONTENT, tags=["obras"])
 def delete_obra(obra_id: int, db: Session = Depends(get_db)):

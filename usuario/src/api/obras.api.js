@@ -10,8 +10,11 @@ const getObra = (id) => {
   return axios.get(`${API_URL}/obras/${id}`);
 };
 
+const putObra = (id, obra) => {
+  return axios.put(`${API_URL}/obras/${id}`, obra);
+}
 export { 
   getAllObras, 
   getObra,
-  
+  putObra,
 };

@@ -21,7 +21,9 @@
     "react-hook-form": "^7.52.1",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.25.1",
-    "react-scripts": "^3.0.1"
+    "react-scripts": "^3.0.1",
+    "aos": "^2.3.4",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

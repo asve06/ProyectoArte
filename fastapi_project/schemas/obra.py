@@ -5,9 +5,9 @@ from datetime import date
 class ObraBase(BaseModel):
     titulo: str
     descripcion: Optional[str]
-    autor_id: Optional[int]
+    autor_nombre: Optional[str] = None
     fecha_creacion: date
-    ubicacion_id: Optional[int] = None
+    ubicacion_nombre: Optional[str] = None
     palabras_clave: Optional[str]
     url_imagen: Optional[str]
     adicionales: Optional[dict] = None

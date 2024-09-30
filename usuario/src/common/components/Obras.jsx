@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, IconButton, TextField, Select, MenuItem, Button, Box } from '@mui/material';
-import { getAllObras } from '../../api/obras.api';
+import { getAllObras, putObra } from '../../api/obras.api';
+import EditModal from '../../admin/components/EditModal';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Lupa from '@mui/icons-material/SearchOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteRounded';
@@ -12,6 +13,8 @@ export default function StickyHeadTable() {
   const [generalFilter, setGeneralFilter] = useState('');
   const [generalFilterVisible, setGeneralFilterVisible] = useState(false);
   const [advancedFilters, setAdvancedFilters] = useState([]);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedObra, setSelectedObra] = useState(null);
 
   useEffect(() => {
     async function loadObras() {
@@ -128,10 +131,19 @@ export default function StickyHeadTable() {
     }
   });
 
-  const handleEdit = (id) => {
-    // Lógica para editar una obra
-    console.log(`Editando obra con ID: ${id}`);
+  const handleEdit = (obra) => {
+    if(obra){
+      setSelectedObra(obra);
+      setOpenEditModal(true);
+    }
   };
+
+  const handleSave = async (obra) => {
+    // Lógica para guardar una obra
+    console.log(`Guardando obra con ID: ${obra.id}`);
+    await putObra(obra.id, obra);
+    setOpenEditModal(false);
+  }
 
   const handleDelete = (id) => {
     // Lógica para eliminar una obra
@@ -206,9 +218,17 @@ export default function StickyHeadTable() {
                       );
                     })}
                   <TableCell>
-                    <IconButton onClick={() => handleEdit(row.id)}>
+                    <IconButton onClick={() => handleEdit(row)}>
                       <EditIcon color="primary" />
                     </IconButton>
+                    {openEditModal && selectedObra && (
+                      <EditModal 
+                        open={openEditModal}
+                        obra={selectedObra}
+                        handleClose={() => setOpenEditModal(false)}
+                        handleSave={handleSave}
+                      />
+                    )}                  
                     <IconButton onClick={() => handleDelete(row.id)}>
                       <DeleteIcon color="primary" />
                     </IconButton>
