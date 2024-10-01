@@ -1,6 +1,13 @@
-from sqlalchemy import Column, Integer, String, Text, Date, JSON, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Date, JSON, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from config.database import Base
+import enum
+from .detalles_obra import DetallesObra
+ 
+class TipoEnum(enum.Enum):
+    pintura = "pintura"
+    publicacion = "publicacion"
+    multimedia = "multimedia"
 
 class Obra(Base):
     __tablename__ = 'obras'
@@ -14,6 +21,8 @@ class Obra(Base):
     palabras_clave = Column(Text)
     url_imagen = Column(String(255))
     adicionales = Column(JSON)
+    tipo_obra = Column(Enum(TipoEnum), nullable=False)
     
+    detalles = relationship("DetallesObra", back_populates="obra", uselist=False)
     autor = relationship("Autor")
     ubicacion = relationship("Ubicacion")

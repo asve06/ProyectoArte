@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 
 export default function EditModal({ open, handleClose, obra, handleSave }) {
 
-  const [formValues, setFormValues] = useState(obra);
+  const fields = obra || { titulo: '', descripcion: '', autor_id: '', fecha_creacion: '', ubicacion_id: '', palabras_clave: '', url_imagen: '', adicionales: '', tipo_obra:''};
+  
+  const [formValues, setFormValues] = useState(fields);
 
   const handleChange = (e) => {
     console.log(e.target.name, e.target.value);

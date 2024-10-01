@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, IconButton, TextField, Select, MenuItem, Button, Box } from '@mui/material';
 import { getAllObras, putObra } from '../../api/obras.api';
 import EditModal from '../../admin/components/EditModal';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import Lupa from '@mui/icons-material/SearchOutlined';
-import DeleteIcon from '@mui/icons-material/DeleteRounded';
-import EditIcon from '@mui/icons-material/Edit';
+import { FilterAlt as FilterAltIcon, SearchOutlined as Lupa, DeleteRounded as DeleteIcon, Edit as EditIcon,  AddCircle as AddCircleIcon} from '@mui/icons-material';
 
 export default function StickyHeadTable() {
   const [obras, setObras] = useState([]);
@@ -14,6 +11,7 @@ export default function StickyHeadTable() {
   const [generalFilterVisible, setGeneralFilterVisible] = useState(false);
   const [advancedFilters, setAdvancedFilters] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [selectedObra, setSelectedObra] = useState(null);
 
   useEffect(() => {
@@ -330,7 +328,17 @@ export default function StickyHeadTable() {
         </Box>
       )}
     </div>
-
+    <IconButton onClick={() => setOpenAddModal(true)}>
+      <AddCircleIcon color="primary" />
+    </IconButton>
+    {openAddModal && (
+      <EditModal 
+        open={openAddModal}
+        obra={null}
+        handleClose={() => setOpenAddModal(false)}
+        handleSave={handleSave}
+      />
+    )}  
     <TablePagination
       rowsPerPageOptions={[10, 25, 100]}
       component="div"

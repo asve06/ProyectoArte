@@ -4,15 +4,13 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from models.obra import Obra
+from fastapi_project.models.detalles_obra import DetallesObra
 from models.autor import Autor
 from models.ubicacion import Ubicacion
 from models.usuario import Usuario
 from models.categoria import Categoria
 from models.movimiento import Movimiento
-from models.multimedia import Multimedia
 from models.newsletter import Newsletter
-from models.pintura import Pintura
-from models.publicacion import Publicacion
 from models.tecnica import Tecnica
 from config.database import Base
 

@@ -1,7 +1,13 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import date
+from enum import Enum
 
+class TipoEnum(str, Enum):
+    pintura = "pintura"
+    publicacion = "publicacion"
+    multimedia = "multimedia"
+    
 class ObraBase(BaseModel):
     titulo: str
     descripcion: Optional[str]
@@ -11,6 +17,7 @@ class ObraBase(BaseModel):
     palabras_clave: Optional[str]
     url_imagen: Optional[str]
     adicionales: Optional[dict] = None
+    tipo_obra: TipoEnum
 
 class ObraCreate(ObraBase):
     pass
