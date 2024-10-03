@@ -13,8 +13,13 @@ const getObra = (id) => {
 const putObra = (id, obra) => {
   return axios.put(`${API_URL}/obras/${id}`, obra);
 }
+
+const postObra = (obra) => {
+  return axios.post(`${API_URL}/obras`, obra);
+}
 export { 
   getAllObras, 
   getObra,
   putObra,
+  postObra,
 };

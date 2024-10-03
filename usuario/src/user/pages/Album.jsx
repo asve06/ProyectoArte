@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardMedia, Grid, Typography, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { getAllObras } from '../../api/obras.api';
+import { getAllObras } from '../../api/index.api';
 
 const HeroContent = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,

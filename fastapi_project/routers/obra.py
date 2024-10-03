@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from models.obra import Obra
+from models.detalles_obra import DetallesObra
 from config.database import get_db
 from schemas.obra import ObraCreate, ObraRead
 from schemas.detalles_obra import DetallesObraCreate
@@ -16,16 +17,23 @@ def get_obras(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
 
 @obra.post("/obras", response_model=ObraRead, tags=["obras"])
 def create_obras(obra: ObraCreate, db: Session = Depends(get_db)):
-    db_obra = Obra(**obra.model_dump()) # Convertir a un diccionario con model_dump
-    db.add(db_obra) # Agregar a la base de datos
-    db.commit() # Commit para guardar los cambios
-    db.refresh(db_obra) # Refrescar la instancia para 
-    detalles_data = obra.detalles.model_dump()
-    db_detalles = DetallesObraCreate(**detalles_data, obra_id=db_obra.id)
-    db.add(db_detalles)
-    db.commit()
-    db.refresh(db_detalles)
-    return db_obra #Devolver la instancia creada
+    try:
+        print("Datos de la obra:", obra.model_dump())
+        db_obra = Obra(**obra.model_dump(exclude={"detalles"})) # Convertir a un diccionario con model_dump
+        db.add(db_obra) # Agregar a la base de datos
+        db.commit() # Commit para guardar los cambios
+        db.refresh(db_obra) # Refrescar la instancia para 
+        print("Hasta aqui todo bien")
+        print(obra.detalles.model_dump())
+        detalles_data = obra.detalles.model_dump() if obra.detalles else {}
+        db_detalles = DetallesObra(**detalles_data, obra_id=db_obra.id)
+        db.add(db_detalles)
+        db.commit()
+        db.refresh(db_detalles)
+        return db_obra #Devolver la instancia creada
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=f"Error al crear la obra:{str(e)}")
 
 @obra.get("/obras/{obra_id}", response_model=ObraRead, tags=["obras"])
 def read_obra(obra_id: int, db: Session = Depends(get_db)):

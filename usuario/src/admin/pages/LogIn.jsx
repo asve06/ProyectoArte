@@ -3,7 +3,7 @@ import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BackgroundImage from '../../assets/images/ET.jpg'; 
 import { useState } from 'react';
-import { login } from '../../api/auth.api';
+import { login } from '../../api/index.api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, IconButton, TextField, Select, MenuItem, Button, Box } from '@mui/material';
-import { getAllObras, putObra } from '../../api/obras.api';
+import { getAllObras, putObra, postObra } from '../../api/index.api';
 import EditModal from '../../admin/components/EditModal';
 import { FilterAlt as FilterAltIcon, SearchOutlined as Lupa, DeleteRounded as DeleteIcon, Edit as EditIcon,  AddCircle as AddCircleIcon} from '@mui/icons-material';
 
@@ -137,10 +137,21 @@ export default function StickyHeadTable() {
   };
 
   const handleSave = async (obra) => {
+    obra.adicionales = obra.adicionales ? JSON.parse(obra.adicionales) : null;
+    console.log(obra);
     // Lógica para guardar una obra
-    console.log(`Guardando obra con ID: ${obra.id}`);
-    await putObra(obra.id, obra);
-    setOpenEditModal(false);
+    try{
+      if(obra.id){
+        console.log(`Actualizando obra con ID: ${obra.id}`);
+        await putObra(obra.id, obra);
+      } else {
+        console.log('Creando nueva obra');
+        await postObra(obra);
+      }
+    } catch (error){
+      console.error(error);
+    }
+
   }
 
   const handleDelete = (id) => {
@@ -165,7 +176,7 @@ export default function StickyHeadTable() {
                 </TableSortLabel>
               </TableCell>
               {obras.length > 0 && Object.keys(obras[0])
-                .filter(key => key !== 'id')
+                .filter(key => key !== 'id' && key !== 'detalles')
                 .map((key) => (
                   <TableCell key={key} sx={{ fontWeight: 'bold' }}>
                     <TableSortLabel
@@ -188,7 +199,7 @@ export default function StickyHeadTable() {
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id} sx={{ '&:hover': { backgroundColor: '#e2f7fa' } }}>
                   <TableCell>{row.id}</TableCell>
                   {Object.keys(row)
-                    .filter(key => key !== 'id')
+                    .filter(key => key !== 'id' && key !== 'detalles')
                     .map((key) => {
                       const value = row[key];
                       return (
