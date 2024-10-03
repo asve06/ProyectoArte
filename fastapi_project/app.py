@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import autor, categoria, movimiento, multimedia, newsletter, obra, pintura, publicacion, tecnica, ubicacion, usuario
+from routers import autor, categoria, movimiento, newsletter, obra, tecnica, ubicacion, usuario
 from routers.auth import auth
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -31,11 +31,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(autor)
 app.include_router(categoria)
 app.include_router(movimiento)
-app.include_router(multimedia)
 app.include_router(newsletter)
 app.include_router(obra)
-app.include_router(pintura)
-app.include_router(publicacion)
 app.include_router(tecnica)
 app.include_router(ubicacion)
 app.include_router(usuario)

@@ -10,10 +10,10 @@ import { useAuth } from '../../admin/context/useAuth';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#262C38',
+      main: '#5d5c31', //color de la barra de navegacion #262C38
     },
     secondary: {
-      main: '#70D448',
+      main: '#253846', //color de los botones #70D448
     },
     error: {
       main: '#f44336',
