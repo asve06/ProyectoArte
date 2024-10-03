@@ -159,7 +159,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
     if(validateFields()){
       let formattedData = {
         ...formValues,
-        fecha_creacion: formValues.fecha_creacion.format('YYYY-MM-DD'),  // Formatear antes de enviar
+        fecha_creacion: dayjs(formValues.fecha_creacion).format('YYYY-MM-DD'),  // Formatear antes de enviar// Formatear antes de enviar
     };
     formattedData = convertEmptyStringsToNull(formattedData);
     handleSave(formattedData);
@@ -197,7 +197,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
           <InputLabel>Autor</InputLabel>
           <Select
             name="autor_id"
-            value={formValues.autor_id}
+            value={(autores.length > 0) ? formValues.autor_id : ''}
             onChange={handleChange}
             error={!!errors.autor_id}
           >
@@ -228,7 +228,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
           <InputLabel>Ubicación</InputLabel>
           <Select
             name="ubicacion_id"
-            value={formValues.ubicacion_id}
+            value={(ubicaciones.length > 0) ? formValues.ubicacion_id : ""}
             onChange={handleChange}
             error={!!errors.ubicacion_id}
           >
@@ -265,7 +265,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
           name="adicionales"
           label="Adicionales (JSON)"
           fullWidth
-          value={formValues.adicionales}
+          value={formValues.adicionales || ""}
           onChange={handleChange}
         />
 
@@ -288,7 +288,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               <InputLabel>Técnica</InputLabel>
               <Select
                 name="tecnica"
-                value={formValues.detalles.tecnica}
+                value={(tecnicas.length > 0) ? (formValues.detalles.tecnica || "") : ""}
                 onChange={handleChange}
               >
                 {tecnicas.map((tecnica) => (
@@ -303,7 +303,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="estado_conservacion"
               label="Estado de Conservación"
               fullWidth
-              value={formValues.detalles.estado_conservacion}
+              value={formValues.detalles.estado_conservacion || ""}
               onChange={handleChange}
             />
             <TextField
@@ -311,14 +311,14 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="dimensiones"
               label="Dimensiones"
               fullWidth
-              value={formValues.detalles.dimensiones}
+              value={formValues.detalles.dimensiones || ""}
               onChange={handleChange}
             />
             <FormControl fullWidth margin="dense">
               <InputLabel>Movimiento</InputLabel>
               <Select
                 name="movimiento"
-                value={formValues.detalles.movimiento}
+                value={(movimientos.length > 0) ? formValues.detalles.movimiento || "" : ""}
                 onChange={handleChange}
               >
                 {movimientos.map((movimiento) => (
@@ -338,7 +338,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="editor"
               label="Editor"
               fullWidth
-              value={formValues.detalles.editor}
+              value={formValues.detalles.editor || ""}
               onChange={handleChange}
             />
             <TextField
@@ -346,7 +346,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="lugar_publicacion"
               label="Lugar de Publicación"
               fullWidth
-              value={formValues.detalles.lugar_publicacion}
+              value={formValues.detalles.lugar_publicacion || ""}
               onChange={handleChange}
             />
             <TextField
@@ -354,7 +354,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="generos"
               label="Géneros"
               fullWidth
-              value={formValues.detalles.generos}
+              value={formValues.detalles.generos || ""}
               onChange={handleChange}
             />
             <TextField
@@ -362,7 +362,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="idioma"
               label="Idioma"
               fullWidth
-              value={formValues.detalles.idioma}
+              value={formValues.detalles.idioma || ""}
               onChange={handleChange}
             />
             <TextField
@@ -370,7 +370,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="numero_paginas"
               label="Número de Páginas"
               fullWidth
-              value={formValues.detalles.numero_paginas}
+              value={formValues.detalles.numero_paginas || ""}
               onChange={handleChange}
             />
           </>
@@ -383,7 +383,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="tipo_multimedia"
               label="Tipo de Multimedia"
               fullWidth
-              value={formValues.detalles.tipo_multimedia}
+              value={formValues.detalles.tipo_multimedia || ""}
               onChange={handleChange}
             />
             <TextField
@@ -391,7 +391,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="duracion"
               label="Duración"
               fullWidth
-              value={formValues.detalles.duracion}
+              value={formValues.detalles.duracion || ""}
               onChange={handleChange}
             />
             <TextField
@@ -399,7 +399,7 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
               name="formato"
               label="Formato"
               fullWidth
-              value={formValues.detalles.formato}
+              value={formValues.detalles.formato || ""}
               onChange={handleChange}
             />
           </>

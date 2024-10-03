@@ -58,8 +58,19 @@ def update_user(obra_id: int, obra: ObraCreate, db: Session = Depends(get_db)):
     if db_obra is None:
         raise HTTPException(status_code=404, detail="Obra not found")
     # Actualizar los campos de la obra
-    for key, value in obra.model_dump().items():
-        setattr(db_obra, key, value)
-    db.commit()
-    db.refresh(db_obra)
+    try:
+        for key, value in obra.model_dump(exclude={"detalles"}).items():
+            setattr(db_obra, key, value)
+        db.commit()
+        db.refresh(db_obra)
+        
+        detalles_data = obra.detalles.model_dump() if obra.detalles else {}
+        db_detalles = db.query(DetallesObra).filter(DetallesObra.obra_id == obra_id).first()
+        for key, value in detalles_data.items():
+            setattr(db_detalles, key, value)
+        db.commit()
+        db.refresh(db_detalles)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=f"Error al actualizar la obra:{str(e)}")
     return db_obra

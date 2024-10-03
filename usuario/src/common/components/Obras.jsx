@@ -13,17 +13,18 @@ export default function StickyHeadTable() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [selectedObra, setSelectedObra] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    async function loadObras() {
-      const res = await getAllObras();
-      setObras(res.data);
-    }
     loadObras();
   }, []);
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  
+  const loadObras = async () => {
+    const res = await getAllObras();
+    setObras(res.data);
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -148,6 +149,7 @@ export default function StickyHeadTable() {
         console.log('Creando nueva obra');
         await postObra(obra);
       }
+      loadObras();
     } catch (error){
       console.error(error);
     }
