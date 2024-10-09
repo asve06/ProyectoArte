@@ -138,7 +138,6 @@ export default function StickyHeadTable() {
   };
 
   const handleSave = async (obra) => {
-    obra.adicionales = obra.adicionales ? JSON.parse(obra.adicionales) : null;
     console.log(obra);
     // Lógica para guardar una obra
     try{
@@ -178,7 +177,7 @@ export default function StickyHeadTable() {
                 </TableSortLabel>
               </TableCell>
               {obras.length > 0 && Object.keys(obras[0])
-                .filter(key => key !== 'id' && key !== 'detalles')
+                .filter(key => key !== 'id' && key !== 'detalles' && key !== 'adicionales' && key !== 'autor_nombre' && key !== 'ubicacion_nombre')
                 .map((key) => (
                   <TableCell key={key} sx={{ fontWeight: 'bold' }}>
                     <TableSortLabel
@@ -201,30 +200,39 @@ export default function StickyHeadTable() {
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id} sx={{ '&:hover': { backgroundColor: '#e2f7fa' } }}>
                   <TableCell>{row.id}</TableCell>
                   {Object.keys(row)
-                    .filter(key => key !== 'id' && key !== 'detalles')
+                    .filter(key => key !== 'id' && key !== 'detalles' && key !== 'adicionales' && key !== 'autor_nombre' && key !== 'ubicacion_nombre')
                     .map((key) => {
                       const value = row[key];
                       return (
                         <TableCell key={key}>
-                          {key === 'url_imagen' ? (
-                            value ? (
-                              <div>
-                                <img 
-                                  src={value} 
-                                  alt="Obra" 
-                                  style={{ maxWidth: '100px', maxHeight: '90px' }} 
-                                />
-                                <br />
-                                <a href={value} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
-                                  Ver Archivo
-                                </a>
-                              </div>
-                            ) : (
-                              'No Disponible'
+                          {
+                            key === 'url_imagen' ? (
+                              value ? (
+                                <div>
+                                  <img 
+                                    src={value} 
+                                    alt="Obra" 
+                                    style={{ maxWidth: '100px', maxHeight: '90px' }} 
+                                  />
+                                  <br />
+                                  <a href={value} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+                                    Ver Archivo
+                                  </a>
+                                </div>
+                              ) : (
+                                'No Disponible'
+                              )
+                            ) : 
+                            key === 'autor_id' ? (
+                              row.autor_nombre ? row.autor_nombre : 'No Disponible'
+                            ) :
+                            key === 'ubicacion_id' ? (
+                              row.ubicacion_nombre ? row.ubicacion_nombre : 'No Disponible'
+                            ) :
+                            (
+                              typeof value === 'object' ? JSON.stringify(value) : value
                             )
-                          ) : (
-                            typeof value === 'object' ? JSON.stringify(value) : value
-                          )}
+                          }
                         </TableCell>
                       );
                     })}

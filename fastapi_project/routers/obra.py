@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from models.obra import Obra
 from models.detalles_obra import DetallesObra
+from models.autor import Autor
+from models.ubicacion import Ubicacion
 from config.database import get_db
 from schemas.obra import ObraCreate, ObraRead
 from schemas.detalles_obra import DetallesObraCreate
@@ -13,7 +15,11 @@ obra = APIRouter()
 # Definir las ruta get, post, get por id, delete y put
 @obra.get("/obras", response_model=list[ObraRead], tags=["obras"])
 def get_obras(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
-    return db.query(Obra).offset(skip).limit(limit).all()
+    db_obras = db.query(Obra).offset(skip).limit(limit).all()
+    for obra in db_obras:
+        obra.autor_nombre = db.query(Autor.nombre).filter(Autor.id == obra.autor_id).first()[0]
+        obra.ubicacion_nombre = db.query(Ubicacion.nombre).filter(Ubicacion.id == obra.ubicacion_id).first()[0]
+    return db_obras
 
 @obra.post("/obras", response_model=ObraRead, tags=["obras"])
 def create_obras(obra: ObraCreate, db: Session = Depends(get_db)):

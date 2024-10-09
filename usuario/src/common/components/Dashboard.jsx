@@ -21,8 +21,8 @@ const InfoBox = styled(Box)(({ theme }) => ({
 
 const home = [
   {
-    text: "Hola, bienvenido al super inventario de",
-    name: "Enriiiiique Tábara",
+    text: "Hola, bienvenido al inventario de",
+    name: "Enrique Tábara",
     desc: "Descubre más sobre su vida y obras.",
   },
 ];

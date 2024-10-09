@@ -1,8 +1,8 @@
-"""Inicial
+"""Initial migration
 
-Revision ID: 24a048bf6f70
+Revision ID: 585bc390db16
 Revises: 
-Create Date: 2024-09-30 17:08:38.382136
+Create Date: 2024-10-07 23:54:09.810593
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '24a048bf6f70'
+revision: str = '585bc390db16'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -96,10 +96,10 @@ def upgrade() -> None:
     op.create_table('detalles_obras',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('obra_id', sa.Integer(), nullable=False),
-    sa.Column('tecnica', sa.String(length=255), nullable=True),
+    sa.Column('tecnica_id', sa.Integer(), nullable=True),
     sa.Column('estado_conservacion', sa.String(length=255), nullable=True),
     sa.Column('dimensiones', sa.String(length=255), nullable=True),
-    sa.Column('movimiento', sa.String(length=255), nullable=True),
+    sa.Column('movimiento_id', sa.Integer(), nullable=True),
     sa.Column('editor', sa.String(length=255), nullable=True),
     sa.Column('lugar_publicacion', sa.String(length=255), nullable=True),
     sa.Column('generos', sa.String(length=255), nullable=True),
@@ -108,7 +108,9 @@ def upgrade() -> None:
     sa.Column('tipo_multimedia', sa.String(length=255), nullable=True),
     sa.Column('duracion', sa.String(length=255), nullable=True),
     sa.Column('formato', sa.String(length=255), nullable=True),
+    sa.ForeignKeyConstraint(['movimiento_id'], ['movimientos.id'], ),
     sa.ForeignKeyConstraint(['obra_id'], ['obras.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['tecnica_id'], ['tecnicas.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('obra_id')
     )

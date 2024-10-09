@@ -26,6 +26,8 @@ class ObraCreate(ObraBase):
 
 class ObraRead(ObraBase):
     id: int
+    autor_nombre: Optional[str] = None
+    ubicacion_nombre: Optional[str] = None
 
     class Config:
         from_attributes = True
