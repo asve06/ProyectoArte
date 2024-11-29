@@ -9,10 +9,10 @@ class DetallesObra(Base):
     obra_id = Column(Integer, ForeignKey('obras.id', ondelete="CASCADE"), nullable=False, unique=True)
     
     # Atributos de pinturas
-    tecnica = Column(String(255), nullable=True)  
+    tecnica_id = Column(Integer, ForeignKey('tecnicas.id') ,nullable=True)  
     estado_conservacion = Column(String(255), nullable=True)
     dimensiones = Column(String(255), nullable=True)
-    movimiento = Column(String(255), nullable=True)
+    movimiento_id = Column(Integer, ForeignKey('movimientos.id'),nullable=True)
 
     # Atributos de publicaciones
     editor = Column(String(255), nullable=True)
@@ -27,3 +27,5 @@ class DetallesObra(Base):
     formato = Column(String(255), nullable=True)
 
     obra = relationship("Obra", back_populates="detalles")
+    tecnica = relationship("Tecnica", back_populates="detalles")
+    movimiento = relationship("Movimiento", back_populates="detalles")

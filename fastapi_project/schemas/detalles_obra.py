@@ -4,10 +4,10 @@ from typing import Optional
 # Detalles de obra, con validaciones según tipo de obra
 class DetallesObraBase(BaseModel):
     # Atributos de pinturas
-    tecnica: Optional[str] = None
+    tecnica_id: Optional[int] = None
     estado_conservacion: Optional[str] = None
     dimensiones: Optional[str] = None
-    movimiento: Optional[str] = None
+    movimiento_id: Optional[int] = None
 
     # Atributos de publicaciones
     editor: Optional[str] = None

@@ -22,6 +22,25 @@ const theme = createTheme({
       default: '#fff',
     },
   },
+
+  typography: {
+    fontFamily:['PT Sans', 'sans-serif'].join(',')
+  },
+
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        InputLabelProps: {
+          color: 'primary',
+          fontSize: '1rem',
+        },
+        InputProps: {
+          color: '#333',
+          borderColor: '#1976d2',
+        }
+      }
+    }
+  }
 });
 
 const drawerWidth = 180;
