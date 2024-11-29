@@ -124,123 +124,145 @@ export default function EditModal({ open, handleClose, obra, handleSave }) {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>{obra ? 'Editar Obra' : 'Agregar Nueva Obra'}</DialogTitle>
+    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth={true}
+      PaperProps={{
+        style: {
+          minHeight: '55vh',
+          padding: '2rem',
+        }
+      }}
+    >
+      <DialogTitle
+        sx={{
+          color: 'primary.main',
+          fontSize: '1.5rem',
+        }}
+      >
+        {obra ? 'Editar Obra' : 'Agregar Nueva Obra'}
+      </DialogTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          name="titulo"
-          label="Título"
-          fullWidth
-          value={formValues.titulo}
-          onChange={handleChange}
-          error={!!errors.titulo}
-          helperText={errors.titulo?._errors?.[0]}
-        />
-        <TextField
-          margin="dense"
-          name="descripcion"
-          label="Descripción"
-          fullWidth
-          value={formValues.descripcion}
-          onChange={handleChange}
-          error={!!errors.descripcion}
-          helperText={errors.descripcion?._errors?.[0]}
-        />
-
-        <CustomSelect
-          label="Autor"
-          name="autor_id"
-          value={(autores.length > 0) ? formValues.autor_id : ""}
-          options={autores}
-          handleChange={handleChange}
-          error={errors.autor_id}
-        />
-
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Fecha de Creación"
-            inputFormat="DD/MM/YYYY"
-            value={dayjs(formValues.fecha_creacion)}
-            onChange={handleDateChange}
-            textField={(params) => <TextField 
-              {...params} 
-              fullWidth
-              margin="dense"
-              error={!!errors.fecha_creacion}
-              helperText={errors.fecha_creacion?._errors?.[0]}
-              />}
-          />
-        </LocalizationProvider>
-
-        <CustomSelect
-          label="Ubicación"
-          name="ubicacion_id"
-          value={(ubicaciones.length > 0) ? formValues.ubicacion_id : ""}
-          options={ubicaciones}
-          handleChange={handleChange}
-          error={errors.ubicacion_id}
-        />
-
-        <TextField
-          margin="dense"
-          name="palabras_clave"
-          label="Palabras Clave"
-          fullWidth
-          value={formValues.palabras_clave}
-          onChange={handleChange}
-          error={!!errors.palabras_clave}
-          helperText={errors.palabras_clave?._errors?.[0]}
-        />
-
-        <TextField
-          margin="dense"
-          name="url_imagen"
-          label="URL de Imagen"
-          type="file"
-          fullWidth
-          onChange={handleFileChange}
-          error={!!errors.url_imagen}
-          helperText={errors.url_imagen?._errors?.[0]}
-        />
-
-        {/* <TextField
-          margin="dense"
-          name="adicionales"
-          label="Adicionales (JSON)"
-          fullWidth
-          value={formValues.adicionales || ""}
-          onChange={handleChange}
-        /> */}
-
-        <FormControl fullWidth margin="dense" error={!!errors.tipo_obra}>
-          <InputLabel>Tipo de Obra</InputLabel>
-          <Select
-            name="tipo_obra"
-            value={formValues.tipo_obra}
+        <div style= {{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gap: '1rem',
+        }}>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="titulo"
+            label="Título"
+            fullWidth
+            value={formValues.titulo}
             onChange={handleChange}
-          >
-            <MenuItem value="pintura">Pintura</MenuItem>
-            <MenuItem value="publicacion">Publicación</MenuItem>
-            <MenuItem value="multimedia">Multimedia</MenuItem>
-          </Select>
-          <FormHelperText>{errors.tipo_obra?._errors?.[0]}</FormHelperText>
-        </FormControl>
+            error={!!errors.titulo}
+            helperText={errors.titulo?._errors?.[0]}
+          />
+          <TextField
+            margin="dense"
+            name="descripcion"
+            label="Descripción"
+            fullWidth
+            value={formValues.descripcion}
+            onChange={handleChange}
+            error={!!errors.descripcion}
+            helperText={errors.descripcion?._errors?.[0]}
+          />
 
-        <DynamicFields
-          tipoObra={formValues.tipo_obra}
-          formValues={formValues.detalles}
-          handleChange={handleChange}
-          tecnicas={tecnicas}
-          movimientos={movimientos}
-          errors={errors.detalles || {}}
-        />
-        
+          <div style={{ gridRow: 'span 2'}}>
+            <TextField
+              margin="dense"
+              name="url_imagen"
+              label="URL de Imagen"
+              type="file"
+              fullWidth
+              onChange={handleFileChange}
+              error={!!errors.url_imagen}
+              helperText={errors.url_imagen?._errors?.[0]}
+            />
+          </div>
+
+
+          <CustomSelect
+            label="Autor"
+            name="autor_id"
+            value={(autores.length > 0) ? formValues.autor_id : ""}
+            options={autores}
+            handleChange={handleChange}
+            error={errors.autor_id}
+          />
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Fecha de Creación"
+              inputFormat="DD/MM/YYYY"
+              value={dayjs(formValues.fecha_creacion)}
+              onChange={handleDateChange}
+              textField={(params) => <TextField 
+                {...params} 
+                fullWidth
+                margin="dense"
+                error={!!errors.fecha_creacion}
+                helperText={errors.fecha_creacion?._errors?.[0]}
+                />}
+            />
+          </LocalizationProvider>
+
+          <CustomSelect
+            label="Ubicación"
+            name="ubicacion_id"
+            value={(ubicaciones.length > 0) ? formValues.ubicacion_id : ""}
+            options={ubicaciones}
+            handleChange={handleChange}
+            error={errors.ubicacion_id}
+          />
+
+          <TextField
+            margin="dense"
+            name="palabras_clave"
+            label="Palabras Clave"
+            fullWidth
+            value={formValues.palabras_clave}
+            onChange={handleChange}
+            error={!!errors.palabras_clave}
+            helperText={errors.palabras_clave?._errors?.[0]}
+          />
+
+          {/* <TextField
+            margin="dense"
+            name="adicionales"
+            label="Adicionales (JSON)"
+            fullWidth
+            value={formValues.adicionales || ""}
+            onChange={handleChange}
+          /> */}
+
+          <FormControl fullWidth margin="dense" error={!!errors.tipo_obra}>
+            <InputLabel>Tipo de Obra</InputLabel>
+            <Select
+              name="tipo_obra"
+              value={formValues.tipo_obra}
+              onChange={handleChange}
+            >
+              <MenuItem value="pintura">Pintura</MenuItem>
+              <MenuItem value="publicacion">Publicación</MenuItem>
+              <MenuItem value="multimedia">Multimedia</MenuItem>
+            </Select>
+            <FormHelperText>{errors.tipo_obra?._errors?.[0]}</FormHelperText>
+          </FormControl>
+
+          <DynamicFields
+            tipoObra={formValues.tipo_obra}
+            formValues={formValues.detalles}
+            handleChange={handleChange}
+            tecnicas={tecnicas}
+            movimientos={movimientos}
+            errors={errors.detalles || {}}
+          />
+        </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">Cancelar</Button>
-        <Button onClick={onSave} color="primary">Guardar</Button>
+        <Button onClick={handleClose} color="secondary" variant="contained">Cancelar</Button>
+        <Button onClick={onSave} color="primary" variant="contained">Guardar</Button>
       </DialogActions>
     </Dialog>
   );
